@@ -1,8 +1,8 @@
-# GitHub backup script
+# GitHub and Bitbucket backup script
 
-This directory contains a script, `backup.py`, for backing up GitHub repositories.
+This directory contains a script, `backup.py`, for backing up GitHub and Bitbucket repositories.
 
-The script requires a GitHub token and a destination directory. It then uses the token to populate the destination directory with clones of all the repositories the token can access.
+The script requires a GitHub and Bitbucket token and a destination directory. It then uses the token to populate the destination directory with clones of all the repositories the token can access.
 
 Repeated runs only update the already existing backups and add new repositories, if any.
 
@@ -41,28 +41,35 @@ To run the script you need a JSON configuration file. For an example see the inc
 As an example let's create a file, `config.json`. This file should contain the token we just created and the destination directory where we want to back up the repositories:
 
 ```
-{
-    "token": "6b86190dd45c57c1a1b039a5a54d892e019102f7",
-    "directory": "~/backups/github.com"
+{ "repositories" : [
+    { "type": "github",
+      "token": "<github token>",
+      "directory": "<github>",
+      "owners": ["<owner1>", "<owner2>"]},
+    { "type": "bitbucket",
+      "token": "<bitbucket app password>",
+      "directory": "<bitbucket>",
+      "user": "<bitbucket username>",
+      "workspace": "<bitbucket workspace>"}
+],
+ "repeat": "1440"
 }
 ```
 
-#### Choose users and organizations to back up
-
-By default, all repositories you have read access to are backed up. To choose which users' and organizations' repos are backed up, add `owners` to `config.json`:
-
-```
-{
-    "token": "6b86190dd45c57c1a1b039a5a54d892e019102f7",
-    "directory": "~/backups/github.com",
-    "owners": ["username", "anotherusername"]
-}
-```
+Repeat can be added to make the script run forever at repeat minutes interval.
+Remove the repeat or set to 0 to run the script only once.
 
 ## Running
+
+Two environment variables should be set before running the script
+
+```
+export CONFIG_FILE="<my config.json file>"
+export BACKUP_DIR="<backup dir>"
+```
 
 After preparing the token and the configuration file you now can run the script:
 
 ```
-$ python3 backup.py config.json
+$ python3 backup.py
 ```

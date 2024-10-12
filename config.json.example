@@ -1,4 +1,13 @@
-{
-    "token": "0123456789abcdef0123456789abcdef",
-    "directory": "~/backups/github.com"
+{ "repositories" : [
+    { "type": "github",
+      "token": "<github token>",
+      "directory": "<github>",
+      "owners": ["<owner1>", "<owner2>"]},
+    { "type": "bitbucket",
+      "token": "<bitbucket app password>",
+      "directory": "<bitbucket>",
+      "user": "<bitbucket username>",
+      "workspace": "<bitbucket workspace>"}
+],
+ "repeat": "1440"
 }
