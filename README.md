@@ -68,8 +68,42 @@ export CONFIG_FILE="<my config.json file>"
 export BACKUP_DIR="<backup dir>"
 ```
 
+If these environment variables are not set, then they will be set to Docker friendly
+values CONFIG_FILE=/config, and BACKUP_DIR=/backup.
+
 After preparing the token and the configuration file you now can run the script:
 
 ```
 $ python3 backup.py
+```
+
+## Docker
+
+You can use a docker image to run the backup script inside a Docker container.
+Map volume to /backup and /config.
+
+Example of command line:
+
+```
+docker run --rm -it -v ${PWD}/../backups:/backup -v ${PWD}/../config:/config torerams/git-backup:1.0
+```
+
+## Synology NAS
+
+The Docker container can be run on a Synology NAS using the Container Manager.
+
+Example of YAML configuration:
+
+```
+version: '1.0'
+services:
+  backup-service:
+    image: torerams/git-backup:1.0
+    restart: always
+    container_name: git-backup
+    volumes:
+      - /volume1/backups/git-backup:/backup
+      - /volume1/docker/git-backup/config:/config
+    environment:
+      - TZ=Europe/Oslo
 ```

@@ -124,8 +124,15 @@ def backupBitBucket(repo, backupDir):
 def main():
     print("Backing up git repositories")
 
-    configFile = os.getenv('CONFIG_FILE')
-    backupDir = os.getenv('BACKUP_DIR')
+    if 'CONFIG_FILE' in os.environ:
+        configFile = os.getenv('CONFIG_FILE')
+    else:
+        configFile = "/config/config.json"
+
+    if 'BACKUP_DIR' in os.environ:
+        backupDir = os.getenv('BACKUP_DIR')
+    else:
+        backupDir = "/backup"
 
     with open(configFile, "rb") as f:
         config = json.loads(f.read())
